@@ -32,7 +32,20 @@ public class Main {
             break;
           case 2:
             hi.showMenu();
-            hi.addOrder();
+            System.out.println("Enter the item number :");
+            int n=sc.nextInt();
+            if(n>0 && n<7){
+              System.out.println("Enter the quantity :");
+              int qty=sc.nextInt();
+              hi.addOrder(n-1,qty);
+            }else{
+              try{
+                throw new InvalidChoice();
+              }catch(InvalidChoice e){
+                System.out.println(e.getMessage());
+              }
+            }
+            
             break;
           case 3:
             hi.bill(c);

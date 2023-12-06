@@ -2,74 +2,48 @@ import java.util.Scanner;
 
 public class Hotel_Impl implements Hotel_Interface {
     Scanner sc=new Scanner(System.in);
-    String[] items={"Roti", "Dosa", "Gobi"};
-    int[] prices={10, 40, 50};
-    int column=5;
-    int[][] quantity=new int[items.length][items.length];
+    String[] items={"Roti", "Dosa", "Gobi","Noodles", "Fried Rice","Mashrooms"};
+    int[][] quantity=new int[items.length][2];
+    Hotel_Impl(){
+        quantity[0][0]=10;
+        quantity[1][0]=50;
+        quantity[2][0]=60;
+        quantity[3][0]=55;
+        quantity[4][0]=50;
+        quantity[5][0]=65;
+
+    }
     
     @Override
     public void choice() {
         System.out.println("1.Show Menu\n2.Add Order\n3.Bill Order\n4.Exit");
     }
     @Override
-    public void addOrder() {
-        System.out.print("Enter the item number you want to order : ");
-        int choice = sc.nextInt();
-        if(choice<0||choice>items.length) {
-                try{
-                    throw new InvalidChoice();
-                }catch(InvalidChoice e){
-                    System.out.println(e.getMessage());
-                }
+    public void addOrder(int items,int plates) {
     
-            } else if (choice==1){
-                System.out.print("Enter the quantity: ");
-                int qty = sc.nextInt();
-                int c=choice-1;
-                quantity[c][c]=qty;
-                System.out.println("Order summary:");
-                System.out.printf("|    %-9s  |   %-10s   |%n",items[0],quantity[c][c]);
-               
-    
-            }else if(choice==2) {
-                System.out.print("Enter the quantity: ");
-                int qty = sc.nextInt();
-                int c=choice-1;
-                quantity[choice-1][c]=qty;
-                System.out.println("Order summary:");
-                System.out.printf("|    %-9s  |   %-10s   |%n",items[1],quantity[choice-1][c]);
-               
-            }
-            else if(choice==3) {
-                System.out.print("Enter the quantity: ");
-                int qty = sc.nextInt();
-                int c=choice-1;
-                quantity[choice-1][c]=qty;
-                System.out.println("Order summary:");
-                System.out.printf("|    %-9s  |   %-10s   |%n",items[2],quantity[choice-1][c]);
-                
-            }
-       
+        quantity[items][1]+=plates;
 
     }
     @Override
     public void bill(Customer c) {
         double totalAmount =0;
-        System.out.printf("+--------------------------------+");
+        int count=1;
+        System.out.printf("+------------------------------------------+\n");
         System.out.printf("     %-9s  |   %-10d    %n",c.getName(),c.getPhoneNumber());
-        System.out.printf("+--------------------------------+");
-        System.out.printf("     : Final Order Summary :      \n");
-        System.out.printf("+--------------------------------+\n");
+        System.out.printf("+------------------------------------------+\n");
+        System.out.printf("          : Final Order Summary :           \n");
+        System.out.printf("+------------------------------------------+\n");
+        System.out.printf("|   %-9s  |   %-10s   |  %-6s  |%n","ITEMS","QUANTITY","PRICE");
         
-            for(int i=0; i<items.length; i++) {
-            for(int j=0;j<items.length;j++) {
-                if(quantity[i][j]!=0){
-                    System.out.printf("|    %-9s  |   %-10s   |%n",items[i],quantity[i][j]);
-                totalAmount+=prices[i]*quantity[i][j];
+            for(int i=0; i<items.length; i++){
+                if(quantity[i][1]>0){
+                    System.out.printf("|%-2d %-9s  |      %-8d  |  %-6d  |%n",count,items[i],quantity[i][1],quantity[i][0]);
+                    totalAmount+=quantity[i][1]*quantity[i][0];
+                    count++;
                 }
             }
-        }
-        System.out.printf("+--------------------------------+\n");
+        
+        System.out.printf("+------------------------------------------+\n");
         System.out.println("Total Amount : " + totalAmount);
         double tax =(totalAmount*0.18);
         System.out.println("Tax : " + tax);
@@ -81,13 +55,16 @@ public class Hotel_Impl implements Hotel_Interface {
     }
     @Override
     public void showMenu() {
-        System.out.printf("+--------------------------------+\n");
-      System.out.printf("|    %-9s  |   %-10s   |%n","ITEMS","PRICE");
-      System.out.printf("+--------------------------------+\n");
-      System.out.printf("|    %-9s  |   %-10s   |%n","1. ROTI","Rs 10/pc");
-      System.out.printf("|    %-9s  |   %-10s   |%n","2. DOSA","Rs 40/pc");
-      System.out.printf("|    %-9s  |   %-10s   |%n","3. GOBI","Rs 50/pc");
-      System.out.printf("+--------------------------------+\n");
+        System.out.printf("+---------------------------------+\n");
+      System.out.printf("|    %-10s  |   %-10s   |%n","ITEMS","PRICE");
+      System.out.printf("+---------------------------------+\n");
+      System.out.printf("|  %-12s  |   %-10s   |%n","1. ROTI","Rs 10/pc");
+      System.out.printf("|  %-12s  |   %-10s   |%n","2. DOSA","Rs 50/pc");
+      System.out.printf("|  %-12s  |   %-10s  |%n","3. GOBI","Rs 60/plate");
+      System.out.printf("|  %-12s  |   %-10s   |%n","4. NOODLES","Rs 55/pc");
+      System.out.printf("|  %-13s |   %-10s   |%n","5. FRIED RICE","Rs 60/pc");
+      System.out.printf("|  %-12s  |   %-10s   |%n","6. MASHROOMS","Rs 65/pc");
+      System.out.printf("+---------------------------------+\n");
     }
    
    
